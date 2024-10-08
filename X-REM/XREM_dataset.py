@@ -15,6 +15,9 @@ class CXRTestDataset_h5(data.Dataset):
                                             transforms.Resize((input_resolution,input_resolution),interpolation=Image.BICUBIC),
                                             transforms.Normalize((101.48761, 101.48761, 101.48761), (83.43944, 83.43944, 83.43944))
                                         ])
+        
+        # edit
+        self.sid_dset = h5py.File(img_path)['sid']
 
         
     def __len__(self):
@@ -29,8 +32,11 @@ class CXRTestDataset_h5(data.Dataset):
         img = torch.from_numpy(img)
         if self.transform:
             img = self.transform(img)
+
+        # edit
+        sid = self.sid_dset[idx]
         
-        return img
+        return img, sid # edit
 
 #Adapted cxr-repair
 #input: files containing paths to the image files
